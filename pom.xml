@@ -3,4 +3,13 @@
   <groupId>com.ank</groupId>
   <artifactId>ankmdb</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+  <dependencies>
+  	<dependency>
+	    <groupId>org.springframework.integration</groupId>
+	    <artifactId>spring-integration-core</artifactId>
+	    <version>4.1.1.RELEASE</version>
+	</dependency>
+  </dependencies>
+  
 </project>
