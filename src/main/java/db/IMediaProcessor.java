@@ -1,6 +1,6 @@
 package db;
 
-public interface IMediaFinder {
+public interface IMediaProcessor {
 
 	void addMedia();
 }
