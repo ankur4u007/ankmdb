@@ -10,6 +10,6 @@
    <context:annotation-config/>
    <context:property-placeholder location="classpath:ankmdb.properties"/>
    
-   <context:component-scan base-package="db.impl"></context:component-scan>
+   <context:component-scan base-package="mdb.*"></context:component-scan>
    
 </beans>
