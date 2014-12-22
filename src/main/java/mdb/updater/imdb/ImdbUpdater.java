@@ -18,7 +18,6 @@ import mdb.updater.impl.MediaDetailsUpdater;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -57,27 +56,27 @@ public class ImdbUpdater extends MediaDetailsUpdater {
 					try {
 						final FileWriter fw = new FileWriter(file.getAbsoluteFile());
 						final BufferedWriter bw = new BufferedWriter(fw);
-						final StringBuilder sb = new StringBuilder();
 						final Element elemMain = responseDoc.getElementById("main");
 						if (elemMain != null) {
-							final Element elemTr = elemMain.select("tr").first();
-							if (elemTr != null) {
-								final Elements elementsTds = elemTr.select("td");
-								if (elementsTds.size() >= 2) {
-									final Element elementTd = elementsTds.get(1);
-									if (elementTd != null) {
-										responseMap = new HashMap<String, Object>();
-										final String referenceUrl = elementTd.select("a").first().attr("href");
-										updateMapWithDetails(baseUrl + referenceUrl, responseMap);
-										bw.write("imgurl : " + responseMap.get(IMediaDetailsUpdater.imageUrl) + "\r\n");
-										bw.write("refernceUrl : " + responseMap.get(IMediaDetailsUpdater.referenceUrl) + "\r\n");
-										bw.write("releaseDate : " + responseMap.get(IMediaDetailsUpdater.releaseDate) + "\r\n");
-										bw.write("rating : " + responseMap.get(IMediaDetailsUpdater.rating) + "\r\n");
-										bw.write("casts : " + responseMap.get(IMediaDetailsUpdater.cast) + "\r\n");
-										bw.close();
-									}
+							responseMap = new HashMap<String, Object>();
+							final Element tdElem = fetchElementBasedOnTagsAndAttributes(elemMain, "td", "class", "primary_photo", null, true);
+							String referenceUrl = null;
+							if (tdElem != null) {
+								final Element refUrlElem = tdElem.child(0);
+								if (refUrlElem != null) {
+									referenceUrl = refUrlElem.attr("href");
 								}
 							}
+							if (referenceUrl != null) {
+								updateMapWithDetails(baseUrl + referenceUrl, responseMap);
+								bw.write("imgurl : " + responseMap.get(IMediaDetailsUpdater.imageUrl) + "\r\n");
+								bw.write("refernceUrl : " + responseMap.get(IMediaDetailsUpdater.referenceUrl) + "\r\n");
+								bw.write("releaseDate : " + responseMap.get(IMediaDetailsUpdater.releaseDate) + "\r\n");
+								bw.write("rating : " + responseMap.get(IMediaDetailsUpdater.rating) + "\r\n");
+								bw.write("casts : " + responseMap.get(IMediaDetailsUpdater.cast) + "\r\n");
+							}
+							bw.close();
+
 						}
 					} catch (final FileNotFoundException e) {
 						// TODO Auto-generated catch block
@@ -153,14 +152,14 @@ public class ImdbUpdater extends MediaDetailsUpdater {
 				}
 			}
 			// loop
-			for (final Element child : mainElem.children()) {
-				foundElement = fetchElementBasedOnTagsAndAttributes(child, tag, attribute, attrvalue, resultsList, limitOccurences);
-				if (limitOccurences) {
-					if (foundElement != null && foundElement.childNodeSize() <= 1) {
+			if (foundElement == null || !limitOccurences) {
+				for (final Element child : mainElem.children()) {
+					foundElement = fetchElementBasedOnTagsAndAttributes(child, tag, attribute, attrvalue, resultsList, limitOccurences);
+					if (foundElement != null && limitOccurences) {
 						break;
 					}
-				}
 
+				}
 			}
 		}
 		// return
