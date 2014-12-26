@@ -34,7 +34,7 @@ public class ImdbUpdater extends MediaDetailsUpdater {
 	protected Document fetchResponse(final String mediaName) {
 		Document webpageDoc = null;
 		try {
-			final String querry = "find?s=all&q=" + URLEncoder.encode(mediaName.trim(), "UTF-8");
+			final String querry = "find?s=tt&q=" + URLEncoder.encode(mediaName.trim(), "UTF-8");
 			webpageDoc = Jsoup.connect(baseUrl + querry).userAgent(browser).timeout(timeout).get();
 		} catch (final UnsupportedEncodingException e1) {
 			log.info(e1.getMessage() + " for " + mediaName);
