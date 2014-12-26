@@ -1,9 +1,15 @@
 package mdb.bo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class MediaBO {
+public class MediaBO implements Serializable {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
 	protected String name;
 	protected Long size;
@@ -11,6 +17,17 @@ public class MediaBO {
 	protected List<String> searchableNames;
 	protected String location;
 	protected String format;
+
+	public MediaBO(final String name, final Long size, final Date lastUpdated, final List<String> searchableNames, final String location,
+			final String format) {
+		super();
+		this.name = name;
+		this.size = size;
+		this.lastUpdated = lastUpdated;
+		this.searchableNames = searchableNames;
+		this.location = location;
+		this.format = format;
+	}
 
 	/**
 	 * @return the name
@@ -57,16 +74,6 @@ public class MediaBO {
 		this.lastUpdated = lastUpdated;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "MediaBO [name=" + name + "]";
-	}
-
 	/**
 	 * @return the searchableNames
 	 */
@@ -110,6 +117,14 @@ public class MediaBO {
 	 */
 	public void setFormat(final String format) {
 		this.format = format;
+	}
+
+	@Override
+	public String toString() {
+		return "MediaBO [" + (name != null ? "name=" + name + ", " : "") + (size != null ? "size=" + size + ", " : "")
+				+ (lastUpdated != null ? "lastUpdated=" + lastUpdated + ", " : "")
+				+ (searchableNames != null ? "searchableNames=" + searchableNames + ", " : "")
+				+ (location != null ? "location=" + location + ", " : "") + (format != null ? "format=" + format : "") + "]";
 	}
 
 }

@@ -1,9 +1,17 @@
 package mdb.bo;
 
-public class EntryBO {
+import java.io.Serializable;
+
+public class EntryBO implements Serializable {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
 	protected MediaBO mediaBo;
 	protected String sourceMachine;
+	protected String referenceName;
 	protected Double rating;
 	protected String referenceUrl;
 	protected String imageUrl;
@@ -81,6 +89,22 @@ public class EntryBO {
 	 */
 	public void setImageUrl(final String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public String getReferenceName() {
+		return referenceName;
+	}
+
+	public void setReferenceName(final String referenceName) {
+		this.referenceName = referenceName;
+	}
+
+	@Override
+	public String toString() {
+		return "EntryBO [" + (mediaBo != null ? "mediaBo=" + mediaBo + ", " : "")
+				+ (sourceMachine != null ? "sourceMachine=" + sourceMachine + ", " : "")
+				+ (referenceName != null ? "referenceName=" + referenceName + ", " : "") + (rating != null ? "rating=" + rating + ", " : "")
+				+ (referenceUrl != null ? "referenceUrl=" + referenceUrl + ", " : "") + (imageUrl != null ? "imageUrl=" + imageUrl : "") + "]";
 	}
 
 }

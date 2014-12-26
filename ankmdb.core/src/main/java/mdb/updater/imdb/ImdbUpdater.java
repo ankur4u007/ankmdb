@@ -52,31 +52,31 @@ public class ImdbUpdater extends MediaDetailsUpdater {
 			if (elemPagecontent != null) {
 				final Element header = elemPagecontent.select("span").first();
 				if (header != null) {
-					final File file = new File("H:\\work\\tmp\\" + header.text().replace("\"", "") + ".txt");
 					try {
-						final FileWriter fw = new FileWriter(file.getAbsoluteFile());
-						final BufferedWriter bw = new BufferedWriter(fw);
 						final Element elemMain = responseDoc.getElementById("main");
 						if (elemMain != null) {
-							responseMap = new HashMap<String, Object>();
 							final Element tdElem = fetchElementBasedOnTagsAndAttributes(elemMain, "td", "class", "primary_photo", null, true);
 							String referenceUrl = null;
 							if (tdElem != null) {
+								responseMap = new HashMap<String, Object>();
+								final File file = new File("H:\\work\\tmp\\" + header.text().replace("\"", "") + ".txt");
+								final FileWriter fw = new FileWriter(file.getAbsoluteFile());
+								final BufferedWriter bw = new BufferedWriter(fw);
 								final Element refUrlElem = tdElem.child(0);
 								if (refUrlElem != null) {
 									referenceUrl = refUrlElem.attr("href");
 								}
+								if (referenceUrl != null) {
+									updateMapWithDetails(baseUrl + referenceUrl, responseMap);
+									bw.write("Name : " + responseMap.get(IMediaDetailsUpdater.referenceName) + "\r\n");
+									bw.write("imgurl : " + responseMap.get(IMediaDetailsUpdater.imageUrl) + "\r\n");
+									bw.write("refernceUrl : " + responseMap.get(IMediaDetailsUpdater.referenceUrl) + "\r\n");
+									bw.write("releaseDate : " + responseMap.get(IMediaDetailsUpdater.releaseDate) + "\r\n");
+									bw.write("rating : " + responseMap.get(IMediaDetailsUpdater.rating) + "\r\n");
+									bw.write("casts : " + responseMap.get(IMediaDetailsUpdater.cast) + "\r\n");
+								}
+								bw.close();
 							}
-							if (referenceUrl != null) {
-								updateMapWithDetails(baseUrl + referenceUrl, responseMap);
-								bw.write("imgurl : " + responseMap.get(IMediaDetailsUpdater.imageUrl) + "\r\n");
-								bw.write("refernceUrl : " + responseMap.get(IMediaDetailsUpdater.referenceUrl) + "\r\n");
-								bw.write("releaseDate : " + responseMap.get(IMediaDetailsUpdater.releaseDate) + "\r\n");
-								bw.write("rating : " + responseMap.get(IMediaDetailsUpdater.rating) + "\r\n");
-								bw.write("casts : " + responseMap.get(IMediaDetailsUpdater.cast) + "\r\n");
-							}
-							bw.close();
-
 						}
 					} catch (final FileNotFoundException e) {
 						// TODO Auto-generated catch block
@@ -113,6 +113,11 @@ public class ImdbUpdater extends MediaDetailsUpdater {
 					if (nextElem != null) {
 						rating = nextElem.text();
 					}
+					nextElem = fetchElementBasedOnTagsAndAttributes(mainElem, "span", "itemprop", "name", null, true);
+					String referenceName = null;
+					if (nextElem != null) {
+						referenceName = nextElem.text();
+					}
 					final List<String> castList = new ArrayList<String>();
 					fetchElementBasedOnTagsAndAttributes(titleElem, "span", "itemprop", "name", castList, false);
 
@@ -121,6 +126,7 @@ public class ImdbUpdater extends MediaDetailsUpdater {
 					responseMap.put(IMediaDetailsUpdater.releaseDate, releaseDate);
 					responseMap.put(IMediaDetailsUpdater.rating, rating);
 					responseMap.put(IMediaDetailsUpdater.cast, castList);
+					responseMap.put(IMediaDetailsUpdater.referenceName, referenceName);
 				}
 			}
 		} catch (final UnsupportedEncodingException e1) {

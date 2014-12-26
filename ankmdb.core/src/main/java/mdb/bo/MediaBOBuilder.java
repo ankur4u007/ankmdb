@@ -11,13 +11,6 @@ public class MediaBOBuilder {
 
 	public static final MediaBO buildBoFromDetails(final String name, final Date lastUpdated, final Long size, final String location,
 			final List<String> searchableNames, final String format) {
-		final MediaBO bo = new MediaBO();
-		bo.setName(name);
-		bo.setLastUpdated(lastUpdated);
-		bo.setSize(size);
-		bo.setLocation(location);
-		bo.setFormat(format);
-		bo.setSearchableNames(searchableNames);
-		return bo;
+		return new MediaBO(name, size, lastUpdated, searchableNames, format, format);
 	}
 }

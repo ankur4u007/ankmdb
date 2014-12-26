@@ -11,6 +11,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +22,7 @@ import mdb.bo.EntryBO;
 import mdb.bo.EntryBOBuilder;
 import mdb.bo.MediaBO;
 import mdb.bo.MediaBOBuilder;
+import mdb.bo.MoviesBOBuilder;
 import mdb.processors.IMediaProcessor;
 import mdb.searchNameGenerator.ISerachNameGenerator;
 import mdb.updater.IMediaDetailsUpdater;
@@ -97,17 +100,62 @@ public class MediaProcessor implements IMediaProcessor {
 		return mediaBOList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<EntryBO> updateMediaDetails(final List<MediaBO> mediaList) {
 		final List<EntryBO> entryBOList = new ArrayList<EntryBO>();
 		for (final MediaBO mediaBO : mediaList) {
-			final List<Map<String, Object>> responseMapList = new ArrayList<Map<String, Object>>();
-			for (final String searchableNames : mediaBO.getSearchableNames()) {
-				if (searchableNames != null) {
-					responseMapList.add(mediaDetailsUpdater.updateMedia(searchableNames));
+			Map<String, Object> responseMap = null;
+			for (final String searchableName : mediaBO.getSearchableNames()) {
+				if (searchableName != null) {
+					responseMap = iterateSearchableNameFromEndToStart(searchableName);
+					if (responseMap != null) {
+						break;
+					}
 				}
 			}
-			entryBOList.add(EntryBOBuilder.buildBoFromList(mediaBO, mediaSource, null, null, null));
+			if (responseMap != null) {
+				final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				Date releaseDate = null;
+				final String releaseDateString = responseMap.get(IMediaDetailsUpdater.releaseDate) == null ? null : (String) responseMap
+						.get(IMediaDetailsUpdater.releaseDate);
+				try {
+					if (releaseDateString != null) {
+						releaseDate = format.parse(releaseDateString);
+					}
+				} catch (final ParseException pe) {
+					releaseDate = null;
+				}
+				entryBOList
+				.add(EntryBOBuilder.buildBoFromList(
+						MoviesBOBuilder.buildMoviesBO(mediaBO, responseMap.get(IMediaDetailsUpdater.cast) == null ? null
+								: (List<String>) responseMap.get(IMediaDetailsUpdater.cast), releaseDate),
+								mediaSource,
+								responseMap.get(IMediaDetailsUpdater.rating) == null ? null : new Double((String) responseMap
+										.get(IMediaDetailsUpdater.rating)),
+										responseMap.get(IMediaDetailsUpdater.referenceUrl) == null ? null : (String) responseMap
+												.get(IMediaDetailsUpdater.referenceUrl),
+												responseMap.get(IMediaDetailsUpdater.imageUrl) == null ? null : (String) responseMap
+														.get(IMediaDetailsUpdater.imageUrl), responseMap.get(IMediaDetailsUpdater.referenceName) == null ? null
+										: (String) responseMap.get(IMediaDetailsUpdater.referenceName)));
+			}
 		}
 		return entryBOList;
 	}
+
+	private Map<String, Object> iterateSearchableNameFromEndToStart(final String searchableName) {
+		Map<String, Object> responseMap = null;
+		final String[] brokenSearchableName = searchableName.split(" ");
+		for (int i = brokenSearchableName.length; i > 0; i--) {
+			final StringBuilder sb = new StringBuilder();
+			for (int j = 0; j < i; j++) {
+				sb.append(brokenSearchableName[j]).append(" ");
+			}
+			responseMap = mediaDetailsUpdater.updateMedia(sb.toString().trim());
+			if (responseMap != null) {
+				break;
+			}
+		}
+		return responseMap;
+	}
+
 }
