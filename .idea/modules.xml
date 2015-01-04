@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ankmdb.parent/ankmdb.client/ankmdb.client.iml" filepath="$PROJECT_DIR$/ankmdb.parent/ankmdb.client/ankmdb.client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ankmdb.parent/ankmdb.core/ankmdb.core.iml" filepath="$PROJECT_DIR$/ankmdb.parent/ankmdb.core/ankmdb.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ankmdb.parent/ankmdb.parent.iml" filepath="$PROJECT_DIR$/ankmdb.parent/ankmdb.parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ankmdb.parent/ankmdb.web/ankmdb.web (1).iml" filepath="$PROJECT_DIR$/ankmdb.parent/ankmdb.web/ankmdb.web (1).iml" />
+      <module fileurl="file://$PROJECT_DIR$/ankmdb.parent/ankmdb.web/target/m2e-wtp/web-resources/META-INF/maven/com.ank/ankmdb.web/ankmdb.web (2).iml" filepath="$PROJECT_DIR$/ankmdb.parent/ankmdb.web/target/m2e-wtp/web-resources/META-INF/maven/com.ank/ankmdb.web/ankmdb.web (2).iml" />
+    </modules>
+  </component>
+</project>

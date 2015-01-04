@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="ankmdb.web (2):war exploded">
+    <output-path>$PROJECT_DIR$/ankmdb.parent/ankmdb.web/target/m2e-wtp/web-resources/META-INF/maven/com.ank/ankmdb.web/target/ankmdb.web-0.0.1-SNAPSHOT</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="ankmdb.web (2)" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="H:\work\git_repo\ankmdb\ankmdb.parent\ankmdb.web\target\m2e-wtp\web-resources\META-INF\maven\com.ank\ankmdb.web\target/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="ankmdb.web (2)/web/Web" />
+    </root>
+  </artifact>
+</component>
