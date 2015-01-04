@@ -38,6 +38,23 @@
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
 	</properties>
+	<build>
+    <sourceDirectory>src</sourceDirectory>
+  		<resources>
+	  		<resource>
+			 	<directory>src\main\java</directory>
+					<includes>
+					  	<include>**/*.xml</include>
+					</includes>
+	  		</resource>
+	  		<resource>
+		 		<directory>src\main\resources</directory>
+					<includes>
+			  			<include>**/*.properties</include>
+					</includes>
+	  		</resource>
+  		</resources> 
+  	</build>
       <profiles>
 		<profile>
 			<!-- When built in OpenShift the 'openshift' profile will be used when 
